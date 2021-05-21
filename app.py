@@ -1,3 +1,5 @@
+# pip3 install Flask, pip3 install flask-pymongo, pip3 install dnspython
+
 import os
 from flask import (
     Flask, flash, render_template,
@@ -15,6 +17,7 @@ app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
 app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
+
 
 @app.route("/")
 @app.route("/get_tasks")
