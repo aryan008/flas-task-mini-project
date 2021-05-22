@@ -1,4 +1,11 @@
 # pip3 install Flask, pip3 install flask-pymongo, pip3 install dnspython
+"""import os
+
+os.environ.setdefault("IP", "0.0.0.0")
+os.environ.setdefault("PORT", "5000")
+os.environ.setdefault("SECRET_KEY", "Gp%tS=:yGQUgrwHkU:IR;$=_S8lJE^")
+os.environ.setdefault("MONGO_URI", "mongodb+srv://root:rOOtUser@myfirstcluster.lkzob.mongodb.net/task_manager?retryWrites=true&w=majority")
+os.environ.setdefault("MONGO_DBNAME", "task_manager") */"""
 
 import os
 from flask import (
@@ -86,7 +93,19 @@ def profile(username):
     # grab the session user's username from db
     username = mongo.db.users.find_one(
         {"username": session["user"]})["username"]
-    return render_template("profile.html", username=username)
+
+    if session["user"]:
+        return render_template("profile.html", username=username)
+
+    return redirect(url_for("login"))
+
+
+@app.route("/logout")
+def logout():
+    # remove user from session cookie
+    flash("You have been logged out")
+    session.pop("user")
+    return redirect(url_for("login"))
 
 
 if __name__ == "__main__":
